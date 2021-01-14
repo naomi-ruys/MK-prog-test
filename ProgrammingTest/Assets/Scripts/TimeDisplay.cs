@@ -8,15 +8,17 @@ public class TimeDisplay : MonoBehaviour
     public GameObject hours, minutes, seconds;
     public GameObject separatorHM, separatorMS;
     public GameObject amPM;
+    public Button removeButton;
 
-    private MyTime currTime = new MyTime(10, 50, 50);
+    private Util.MyTime currTime = new Util.MyTime(10, 50, 50);
     private bool format12hr = true;
     private bool formatAM = false;
     private bool pause = false;
 
+    private List<GameObject> setTimeButtons = new List<GameObject>();
+
     private Text hText, mText, sText, amText;
 
-    // Start is called before the first frame update
     void Start()
     {
         //get all text elements
@@ -24,7 +26,6 @@ public class TimeDisplay : MonoBehaviour
         mText = minutes.GetComponentInChildren<Text>();
         sText = seconds.GetComponentInChildren<Text>();
         amText = amPM.GetComponentInChildren<Text>();
-
 
         //TODO -- Set this in a "SetTime" function based on user input -------------------
         //Set initial am/pm
@@ -38,7 +39,6 @@ public class TimeDisplay : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!pause)
@@ -47,9 +47,9 @@ public class TimeDisplay : MonoBehaviour
         }
 
         //display time
-        sText.text = DoubleDigit((int)currTime.second);
-        mText.text = DoubleDigit(currTime.minute);
-        hText.text = DoubleDigit(currTime.hour);
+        sText.text = Util.DoubleDigit((int)currTime.second);
+        mText.text = Util.DoubleDigit(currTime.minute);
+        hText.text = Util.DoubleDigit(currTime.hour);
 
     }
 
@@ -83,6 +83,20 @@ public class TimeDisplay : MonoBehaviour
         {
             currTime.hour = 0;
         }
+    }
+
+    public void SetTime()
+    {
+        int hr, min;
+        float sec = 0;
+
+        pause = true;
+        hr = 1;
+        min = 1;
+
+
+        //Set the user given time, as the current time
+        currTime = new Util.MyTime(hr, min, sec);
     }
 
     public void FormatChange(int format)
@@ -177,22 +191,14 @@ public class TimeDisplay : MonoBehaviour
         formatAM = !formatAM;
     }
 
-    private string DoubleDigit(int time)
+    public void RemoveClock()
     {
-        return time.ToString().PadLeft(2, '0');
+        Destroy(gameObject);
     }
 
-    private struct MyTime
+    public void DeactiveRemoveButton()
     {
-        public float second;
-        public int hour, minute;
-
-        public MyTime (int h, int m, float s)
-        {
-            hour = h;
-            minute = m;
-            second = s;
-        }
+        removeButton.interactable = false;
     }
 
 }
