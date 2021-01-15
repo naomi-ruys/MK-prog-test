@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Countdown : MonoBehaviour
+public class Countdown : Clock
 {
     public GameObject hours, minutes, seconds;
     public GameObject separatorHM, separatorMS;
-    public Button startButton, removeButton;
+    public Button startButton;
     public AudioSource alarmSound;
 
     private Util.MyTime initTime = new Util.MyTime(0, 0, 10);
@@ -64,7 +64,11 @@ public class Countdown : MonoBehaviour
 
     public void PauseTime() => pause = true;
 
-    public void StartTime() => pause = false;
+    public void StartTime()
+    {
+        pause = false;
+        //if hrs == 0 setactive false, for hrs & sepHM
+    }
 
     public void SetTime()
     {
@@ -80,13 +84,4 @@ public class Countdown : MonoBehaviour
         alarmSound.PlayOneShot(alarmSound.clip);
     }
 
-    public void RemoveClock()
-    {
-        Destroy(gameObject);
-    }
-
-    public void DeactiveRemoveButton()
-    {
-        removeButton.interactable = false;
-    }
 }

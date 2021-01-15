@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeDisplay : MonoBehaviour
+public class TimeDisplay : Clock
 {
     public GameObject hours, minutes, seconds;
     public GameObject separatorHM, separatorMS;
     public GameObject amPM;
-    public Button removeButton;
+    //public Button removeButton;
 
     private Util.MyTime currTime = new Util.MyTime(10, 50, 50);
     private bool format12hr = true;
@@ -41,7 +41,7 @@ public class TimeDisplay : MonoBehaviour
 
     void Update()
     {
-        if (!pause)
+        if (!pause) //--------------------------does this need a pause button??
         {
             IncrementTime();
         }
@@ -96,6 +96,11 @@ public class TimeDisplay : MonoBehaviour
 
 
         //Set the user given time, as the current time
+        currTime = new Util.MyTime(hr, min, sec);
+    }
+
+    public void SetTime(int hr, int min, float sec)
+    {
         currTime = new Util.MyTime(hr, min, sec);
     }
 
@@ -191,14 +196,6 @@ public class TimeDisplay : MonoBehaviour
         formatAM = !formatAM;
     }
 
-    public void RemoveClock()
-    {
-        Destroy(gameObject);
-    }
-
-    public void DeactiveRemoveButton()
-    {
-        removeButton.interactable = false;
-    }
+    
 
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stopwatch : MonoBehaviour
+public class Stopwatch : Clock
 {
     public GameObject minutes, seconds, milliSeconds;
-    public Button startButton, removeButton;
+    public Button startButton;
 
     private Util.MyTime currTime = new Util.MyTime(0, 0, 0, 0);
     //start paused, allow player to begin stopwatch
@@ -70,13 +70,4 @@ public class Stopwatch : MonoBehaviour
         startButton.interactable = true;
     }
 
-    public void RemoveClock()
-    {
-        Destroy(gameObject);
-    }
-
-    public void DeactiveRemoveButton()
-    {
-        removeButton.interactable = false;
-    }
 }
