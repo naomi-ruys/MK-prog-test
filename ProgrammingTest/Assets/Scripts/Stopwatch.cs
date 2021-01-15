@@ -8,7 +8,7 @@ public class Stopwatch : MonoBehaviour
     public GameObject minutes, seconds, milliSeconds;
     public Button startButton, removeButton;
 
-    private Util.MyTime currTime = new Util.MyTime(0, 99, 55, 0);
+    private Util.MyTime currTime = new Util.MyTime(0, 0, 0, 0);
     //start paused, allow player to begin stopwatch
     private bool pause = true;
 
@@ -52,11 +52,10 @@ public class Stopwatch : MonoBehaviour
             currTime.second = 0;
         }
 
-        if (currTime.minute >= 99 && currTime.second == 59 && currTime.milliSecond >= 99) 
+        if (currTime.minute >= 99 && currTime.second == 59 && (int)currTime.milliSecond == 99) 
         {
             pause = true;
             startButton.interactable = false;
-            //change colour
         }
 
     }
