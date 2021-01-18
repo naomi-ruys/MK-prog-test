@@ -12,6 +12,7 @@ public class ClockManager : MonoBehaviour
     public GameObject newClockPanel;
     public SetTime setTimePanel;
     public Canvas canvas; //this determines the scaling of the UI
+    public RectTransform scrollRT;
 
     private List<Clock> clocks = new List<Clock>();
 
@@ -20,6 +21,7 @@ public class ClockManager : MonoBehaviour
     private Vector2 clockDimensions;
     private Vector2 screenDimensions;
     private int numClocksX = 3;
+    private int scrollHeight;
 
 
     private void Awake()
@@ -44,6 +46,17 @@ public class ClockManager : MonoBehaviour
         setTimePanel.gameObject.SetActive(false);
 
         AddDisplay(timeDisplay);
+
+        //Set the height of the scroll section
+        if(numClocksX == 1)
+        {
+            scrollHeight = ((int)clockDimensions.y + (int)spacing.y) * 2;
+        }
+        else
+        {
+            scrollHeight = (int)clockDimensions.y + ((int)spacing.y * 2);
+        }
+        scrollRT.sizeDelta = new Vector2(scrollRT.sizeDelta.x, scrollHeight);
     }
 
     // ----- Buttons -----
@@ -73,6 +86,8 @@ public class ClockManager : MonoBehaviour
             clocks[0].ActiveRemoveButton();
         }
 
+        UpdateScrollHeight();
+
         AddButtonToEnd();
         CloseNewClockPanel();
     }
@@ -99,7 +114,7 @@ public class ClockManager : MonoBehaviour
 
         float ratio = screenDimensions.x / screenDimensions.y;
 
-        if (ratio >= 0)
+        if (ratio >= 1)
         { //horizontal
             numClocksX = 3;
         }
@@ -119,6 +134,30 @@ public class ClockManager : MonoBehaviour
         layout.cellSize = clockDimensions;
     }
 
+    private void UpdateScrollHeight()
+    {
+        int clockHeight = (int)clockDimensions.y + (int)spacing.y;
+        int numLines;
+
+        if (numClocksX == 3)
+        {
+            if (clocks.Count % numClocksX == 0)
+            {
+                numLines = clocks.Count / numClocksX + 1;
+                scrollHeight = numLines * clockHeight;
+                scrollHeight += (int)spacing.y * 2;
+            }
+        }
+        else if (numClocksX == 1)
+        {
+            numLines = clocks.Count + 1;
+            scrollHeight = numLines * clockHeight;
+            scrollHeight += (int)spacing.y * 2;
+        }
+
+        scrollRT.sizeDelta = new Vector2(scrollRT.sizeDelta.x, scrollHeight);
+    }
+
     // ----- Remove Clocks -----
     public void RemoveClock(Clock clock)
     {
@@ -127,5 +166,7 @@ public class ClockManager : MonoBehaviour
         {
             clocks[0].DeactiveRemoveButton();
         }
+
+        UpdateScrollHeight();
     }
 }

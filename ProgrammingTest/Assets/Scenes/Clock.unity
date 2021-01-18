@@ -1188,17 +1188,17 @@ PrefabInstance:
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 770.741
+      value: 771.22107
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140.41801
+      value: -140.4205
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 300.48843
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   m_Spacing: 10
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -1586,17 +1586,17 @@ PrefabInstance:
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 460.74103
+      value: 460.73267
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140.41801
+      value: -140.4205
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 300.48843
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
@@ -2595,6 +2595,7 @@ MonoBehaviour:
   newClockPanel: {fileID: 1952187486}
   setTimePanel: {fileID: 2128388543}
   canvas: {fileID: 1494131662}
+  scrollRT: {fileID: 1709591866}
 --- !u!1001 &1775988706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4074,17 +4075,17 @@ PrefabInstance:
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150.74121
+      value: 150.24422
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140.41797
+      value: -140.4205
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 300.48843
       objectReference: {fileID: 0}
     - target: {fileID: 3166077847944850947, guid: d344ed4cb8dcb4811a46c142ab0303f1,
         type: 3}
