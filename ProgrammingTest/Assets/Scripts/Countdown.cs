@@ -7,12 +7,8 @@ public class Countdown : Clock
 {
     public GameObject hours, minutes, seconds;
     public GameObject separatorHM, separatorMS;
-    public Button startButton;
+    public Button startButton, stopButton;
     public AudioSource alarmSound;
-
-    private Util.MyTime initTime = new Util.MyTime(0, 0, 10);
-    private Util.MyTime currTime = new Util.MyTime(0, 0, 10);
-    private bool pause = true;
 
     private Text hText, mText, sText;
 
@@ -22,6 +18,10 @@ public class Countdown : Clock
         hText = hours.GetComponentInChildren<Text>();
         mText = minutes.GetComponentInChildren<Text>();
         sText = seconds.GetComponentInChildren<Text>();
+
+        //only interact with start/stop once a time has been set
+        startButton.interactable = false;
+        stopButton.interactable = false;
     }
 
     void Update()
@@ -41,7 +41,7 @@ public class Countdown : Clock
     {
         currTime.second -= Time.deltaTime;
 
-        if (currTime.second < 0 && currTime.minute > 0)
+        if (currTime.second < 0 && (currTime.minute > 0 || currTime.hour > 0))
         {
             currTime.minute--;
             currTime.second = 59;
@@ -59,24 +59,48 @@ public class Countdown : Clock
             startButton.interactable = false;
             PlaySound();
         }
-
     }
 
-    public void PauseTime() => pause = true;
+    public void PauseTime()
+    {
+        pause = true;
+        startButton.interactable = true;
+        stopButton.interactable = false;
+    }
 
     public void StartTime()
     {
+        if (currTime.hour == 0)
+        {
+            hours.SetActive(false);
+            separatorHM.SetActive(false);
+        }
         pause = false;
-        //if hrs == 0 setactive false, for hrs & sepHM
+
+        startButton.interactable = false;
+        stopButton.interactable = true;
     }
 
-    public void SetTime()
+    override public void SetTime(Util.MyTime newTime, bool am = true)
     {
-        currTime = initTime;
-        //do the change
-        //cap at 99:59:59
+        currTime = newTime;
 
-        startButton.interactable = true;
+        if(currTime.hour > 0)
+        {
+            hours.SetActive(true);
+            separatorHM.SetActive(true);
+        }
+        else
+        {
+            hours.SetActive(false);
+            separatorHM.SetActive(false);
+        }
+
+        //only allow interaction with start if the timer is not set to 00:00:00
+        if (!currTime.TimeIsZero())
+        {
+            startButton.interactable = true;
+        }
     }
 
     private void PlaySound()

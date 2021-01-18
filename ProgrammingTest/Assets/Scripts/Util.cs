@@ -24,6 +24,16 @@ public class Util : MonoBehaviour
             second = s;
             milliSecond = 0;
         }
+
+        public bool TimeIsZero()
+        {
+            if(hour > 0 || minute > 0 || second > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 
     public static string DoubleDigit(int time)

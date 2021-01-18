@@ -8,14 +8,9 @@ public class TimeDisplay : Clock
     public GameObject hours, minutes, seconds;
     public GameObject separatorHM, separatorMS;
     public GameObject amPM;
-    //public Button removeButton;
 
-    private Util.MyTime currTime = new Util.MyTime(10, 50, 50);
-    private bool format12hr = true;
-    private bool formatAM = false;
-    private bool pause = false;
-
-    private List<GameObject> setTimeButtons = new List<GameObject>();
+    private bool format12hr = false;
+    private bool formatAM;
 
     private Text hText, mText, sText, amText;
 
@@ -27,30 +22,36 @@ public class TimeDisplay : Clock
         sText = seconds.GetComponentInChildren<Text>();
         amText = amPM.GetComponentInChildren<Text>();
 
-        //TODO -- Set this in a "SetTime" function based on user input -------------------
-        //Set initial am/pm
-        if (formatAM)
+        //set initial time as current time
+        currTime.hour = System.DateTime.Now.Hour;
+        currTime.minute = System.DateTime.Now.Minute;
+        currTime.second = System.DateTime.Now.Second;
+        //get the AM/PM of the current time
+        string tt = System.DateTime.Now.ToString(
+            "tt", System.Globalization.CultureInfo.InvariantCulture);
+
+        if (tt == "AM")
         {
-            amText.text = "AM";
+            formatAM = true;
         }
         else
         {
-            amText.text = "PM";
+            formatAM = false;
         }
+
+        Format12();
     }
 
     void Update()
     {
-        if (!pause) //--------------------------does this need a pause button??
-        {
-            IncrementTime();
-        }
+        IncrementTime();
 
         //display time
         sText.text = Util.DoubleDigit((int)currTime.second);
         mText.text = Util.DoubleDigit(currTime.minute);
         hText.text = Util.DoubleDigit(currTime.hour);
 
+        displayAmPm();
     }
 
     private void IncrementTime()
@@ -85,23 +86,12 @@ public class TimeDisplay : Clock
         }
     }
 
-    public void SetTime()
+    override public void SetTime(Util.MyTime newTime, bool am = true)
     {
-        int hr, min;
-        float sec = 0;
+        currTime = newTime;
+        formatAM = am;
 
-        pause = true;
-        hr = 1;
-        min = 1;
-
-
-        //Set the user given time, as the current time
-        currTime = new Util.MyTime(hr, min, sec);
-    }
-
-    public void SetTime(int hr, int min, float sec)
-    {
-        currTime = new Util.MyTime(hr, min, sec);
+        displayAmPm();
     }
 
     public void FormatChange(int format)
@@ -186,16 +176,29 @@ public class TimeDisplay : Clock
 
     private void ToggleAmPm()
     {
-        if (formatAM)
-        {
-            amText.text = "PM";
-        } else
-        {
-            amText.text = "AM";
-        }
         formatAM = !formatAM;
     }
 
-    
+    private void displayAmPm()
+    {
+        if (formatAM)
+        {
+            amText.text = "AM";
+        }
+        else
+        {
+            amText.text = "PM";
+        }
+    }
+
+    override public bool GetAM()
+    {
+        return formatAM;
+    }
+
+    override public bool Get12hr()
+    {
+        return format12hr;
+    }
 
 }

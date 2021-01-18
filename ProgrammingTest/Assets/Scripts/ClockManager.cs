@@ -8,8 +8,9 @@ public class ClockManager : MonoBehaviour
     public static ClockManager cm;
 
     public Button addButton;
-    public GameObject timeDisplay, stopwatch, countdown;
+    public Clock timeDisplay, stopwatch, countdown;
     public GameObject newClockPanel;
+    public SetTime setTimePanel;
     public Canvas canvas; //this determines the scaling of the UI
 
     private List<Clock> clocks = new List<Clock>();
@@ -40,14 +41,9 @@ public class ClockManager : MonoBehaviour
 
         CalculateGridSize();
         CloseNewClockPanel();
-    }
+        setTimePanel.gameObject.SetActive(false);
 
-    private void Update()
-    {
-        if(clocks.Count == 1)
-        {
-            Debug.Log("1");
-        }
+        AddDisplay(timeDisplay);
     }
 
     // ----- Buttons -----
@@ -69,10 +65,24 @@ public class ClockManager : MonoBehaviour
 
         clocks.Add(newClock);
 
+        if (clocks.Count == 1)
+        {
+            clocks[0].DeactiveRemoveButton();
+        } else
+        {
+            clocks[0].ActiveRemoveButton();
+        }
+
         AddButtonToEnd();
         CloseNewClockPanel();
     }
 
+    public void OpenSetTimePanel(Clock display)
+    {
+        setTimePanel.StartSetTime(display);
+    }
+
+    
 
     // ----- Formatting -----
 
@@ -101,7 +111,8 @@ public class ClockManager : MonoBehaviour
         layout.constraintCount = numClocksX;
 
         //what is the width of the clock display
-        float clockSpace = screenDimensions.x - spacing.x * (numClocksX + 2); //account for spacing/padding
+        //account for spacing/padding
+        float clockSpace = screenDimensions.x - spacing.x * (numClocksX + 2); 
         clockDimensions.x = clockSpace / numClocksX;
         clockDimensions.y = clockDimensions.x / 2;
 

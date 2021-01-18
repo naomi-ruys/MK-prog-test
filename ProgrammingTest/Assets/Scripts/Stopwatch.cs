@@ -6,11 +6,7 @@ using UnityEngine.UI;
 public class Stopwatch : Clock
 {
     public GameObject minutes, seconds, milliSeconds;
-    public Button startButton;
-
-    private Util.MyTime currTime = new Util.MyTime(0, 0, 0, 0);
-    //start paused, allow player to begin stopwatch
-    private bool pause = true;
+    public Button startButton, stopButton, resetButton;
 
     private Text mText, sText, msText;
 
@@ -21,6 +17,7 @@ public class Stopwatch : Clock
         sText = seconds.GetComponentInChildren<Text>();
         msText = milliSeconds.GetComponentInChildren<Text>();
         startButton.interactable = true;
+        stopButton.interactable = false;
     }
 
     void Update()
@@ -60,14 +57,27 @@ public class Stopwatch : Clock
 
     }
 
-    public void PauseTime() => pause = true;
+    public void PauseTime()
+    {
+        pause = true;
+        startButton.interactable = true;
+        stopButton.interactable = false;
+        resetButton.interactable = true;
+    }
 
-    public void StartTime() => pause = false;
+    public void StartTime()
+    {
+        pause = false;
+        startButton.interactable = false;
+        stopButton.interactable = true;
+        resetButton.interactable = false;
+    }
 
     public void ResetTime()
     {
         currTime = new Util.MyTime(0, 0, 0, 0);
         startButton.interactable = true;
+        stopButton.interactable = false;
     }
 
 }
