@@ -41,19 +41,22 @@ public class Countdown : Clock
     {
         currTime.second -= Time.deltaTime;
 
-        if (currTime.second < 0 && (currTime.minute > 0 || currTime.hour > 0))
+        if (currTime.second < MinimumHMS &&
+            (currTime.minute > MinimumHMS || currTime.hour > MinimumHMS))
         {
             currTime.minute--;
-            currTime.second = 59;
+            currTime.second = MaxSeconds;
         }
 
-        if (currTime.minute < 0 && currTime.hour > 0)
+        if (currTime.minute < MinimumHMS && currTime.hour > MinimumHMS)
         {
             currTime.hour--;
-            currTime.minute = 59;
+            currTime.minute = MaxMinutes;
         }
 
-        if (currTime.hour == 0 && currTime.minute == 0 && (int)currTime.second == 0)
+        if (currTime.hour == MinimumHMS &&
+            currTime.minute == MinimumHMS &&
+            (int)currTime.second == MinimumHMS)
         {
             pause = true;
             startButton.interactable = false;
@@ -70,7 +73,7 @@ public class Countdown : Clock
 
     public void StartTime()
     {
-        if (currTime.hour == 0)
+        if (currTime.hour == MinimumHMS)
         {
             hours.SetActive(false);
             separatorHM.SetActive(false);
@@ -85,7 +88,7 @@ public class Countdown : Clock
     {
         currTime = newTime;
 
-        if(currTime.hour > 0)
+        if(currTime.hour > MinimumHMS)
         {
             hours.SetActive(true);
             separatorHM.SetActive(true);

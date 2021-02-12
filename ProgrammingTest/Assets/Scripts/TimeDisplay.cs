@@ -58,31 +58,31 @@ public class TimeDisplay : Clock
     {
         currTime.second += Time.deltaTime;
 
-        if (currTime.second > 60)
+        if ((int)currTime.second > MaxSeconds)
         {
             currTime.minute++;
-            currTime.second = 0;
+            currTime.second = MinimumHMS;
         }
 
-        if (currTime.minute > 59)
+        if (currTime.minute > MaxMinutes)
         {
             currTime.hour++;
-            currTime.minute = 0;
+            currTime.minute = MinimumHMS;
 
             //change AM/PM
-            if (currTime.hour == 12 || currTime.hour == 24)
+            if (currTime.hour == MaxHours12 || currTime.hour > MaxHours24) 
             {
                 ToggleAmPm();
             }
         }
 
-        if (format12hr && currTime.hour > 12)
+        if (format12hr && currTime.hour > MaxHours12)
         {
-            currTime.hour = 1;
+            currTime.hour = MinHours12;
         }
-        else if (!format12hr && currTime.hour > 23)
+        else if (!format12hr && currTime.hour > MaxHours24)
         {
-            currTime.hour = 0;
+            currTime.hour = MinimumHMS;
         }
     }
 
@@ -143,13 +143,13 @@ public class TimeDisplay : Clock
         format12hr = false;
 
         //time change for PM
-        if (!formatAM && currTime.hour != 12)
+        if (!formatAM && currTime.hour != MaxHours12)
         {
-            currTime.hour += 12;
+            currTime.hour += MaxHours12;
         }
-        else if (formatAM && currTime.hour == 12)
+        else if (formatAM && currTime.hour == MaxHours12)
         {
-            currTime.hour = 0;
+            currTime.hour = MinimumHMS;
         }
     }
 
@@ -164,13 +164,13 @@ public class TimeDisplay : Clock
         amPM.SetActive(true);
         format12hr = true;
 
-        if (currTime.hour > 12)
+        if (currTime.hour > MaxHours12)
         {
-            currTime.hour -= 12;
+            currTime.hour -= MaxHours12;
         }
-        else if (currTime.hour == 0)
+        else if (currTime.hour == MinimumHMS)
         {
-            currTime.hour = 12;
+            currTime.hour = MaxHours12;
         }
     }
 

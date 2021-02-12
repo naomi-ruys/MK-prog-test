@@ -8,6 +8,13 @@ public abstract class Clock : MonoBehaviour
     public Button removeButton;
     protected Util.MyTime currTime = new Util.MyTime(0, 0, 0);
 
+    public const int MaxSeconds = 59;
+    public const int MaxMinutes = 59;
+    public const int MaxHours12 = 12;
+    public const int MaxHours24 = 23;
+    public const int MinHours12 = 1;
+    public const int MinimumHMS = 0;
+
     //start paused, allow player to begin stopwatch
     protected bool pause = true;
 

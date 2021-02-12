@@ -10,6 +10,9 @@ public class Stopwatch : Clock
 
     private Text mText, sText, msText;
 
+    private const int MaxMilliSeconds = 99;
+    private const int MaxMinutesStopwatch = 99;
+
     void Start()
     {
         //get all text elements
@@ -37,19 +40,21 @@ public class Stopwatch : Clock
     {
         currTime.milliSecond += Time.deltaTime * 100;
 
-        if (currTime.milliSecond > 100)
+        if ((int)currTime.milliSecond > MaxMilliSeconds)
         {
             currTime.second++;
-            currTime.milliSecond = 0;
+            currTime.milliSecond = MinimumHMS;
         }
 
-        if (currTime.second > 59)
+        if (currTime.second > MaxSeconds)
         {
             currTime.minute++;
-            currTime.second = 0;
+            currTime.second = MinimumHMS;
         }
 
-        if (currTime.minute >= 99 && currTime.second == 59 && (int)currTime.milliSecond == 99) 
+        if (currTime.minute >= MaxMinutesStopwatch &&
+            currTime.second == MaxSeconds &&
+            (int)currTime.milliSecond == MaxMilliSeconds) 
         {
             pause = true;
             startButton.interactable = false;

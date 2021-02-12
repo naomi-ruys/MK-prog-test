@@ -97,62 +97,62 @@ public class SetTime : MonoBehaviour
     public void IncrementHours()
     {
         newTime.hour++;
-        if(timeDisplay && format12hr && newTime.hour > 12)
+        if(timeDisplay && format12hr && newTime.hour > Clock.MaxHours12)
         {
-            newTime.hour = 1;
+            newTime.hour = Clock.MinHours12;
         }
-        else if (newTime.hour > 23)
+        else if (newTime.hour > Clock.MaxHours24)
         {
-            newTime.hour = 0;
+            newTime.hour = Clock.MinimumHMS;
         }
     }
 
     public void DecrementHours()
     {
         newTime.hour--;
-        if (timeDisplay && format12hr && newTime.hour < 1)
+        if (timeDisplay && format12hr && newTime.hour < Clock.MinHours12)
         {
-            newTime.hour = 12;
+            newTime.hour = Clock.MaxHours12;
         }
-        else if (newTime.hour < 0)
+        else if (newTime.hour < Clock.MinimumHMS)
         {
-            newTime.hour = 23;
+            newTime.hour = Clock.MaxHours24;
         }
     }
 
     public void IncrementMinutes()
     {
         newTime.minute++;
-        if(newTime.minute > 59)
+        if(newTime.minute > Clock.MaxMinutes)
         {
-            newTime.minute = 0;
+            newTime.minute = Clock.MinimumHMS;
         }
     }
 
     public void DecrementMinutes()
     {
         newTime.minute--;
-        if (newTime.minute < 0)
+        if (newTime.minute < Clock.MinimumHMS)
         {
-            newTime.minute = 59;
+            newTime.minute = Clock.MaxMinutes;
         }
     }
 
     public void IncrementSeconds()
     {
         newTime.second++;
-        if (newTime.second > 59)
+        if (newTime.second > Clock.MaxSeconds)
         {
-            newTime.second = 0;
+            newTime.second = Clock.MinimumHMS;
         }
     }
 
     public void DecrementSeconds()
     {
         newTime.second--;
-        if (newTime.second < 0)
+        if (newTime.second < Clock.MinimumHMS)
         {
-            newTime.second = 59;
+            newTime.second = Clock.MaxSeconds;
         }
     }
 

@@ -27,7 +27,7 @@ public class Util : MonoBehaviour
 
         public bool TimeIsZero()
         {
-            if(hour > 0 || minute > 0 || second > 0)
+            if(hour > Clock.MinimumHMS || minute > Clock.MinimumHMS || second > Clock.MinimumHMS)
             {
                 return false;
             }
