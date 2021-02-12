@@ -11,7 +11,7 @@ public abstract class Clock : MonoBehaviour
     //start paused, allow player to begin stopwatch
     protected bool pause = true;
 
-    virtual public void SetTime(Util.MyTime newTime, bool am = true)
+    public virtual void SetTime(Util.MyTime newTime, bool am = true)
     {
         currTime = newTime;
     }
@@ -42,12 +42,12 @@ public abstract class Clock : MonoBehaviour
         removeButton.interactable = true;
     }
 
-    virtual public bool GetAM()
+    public virtual bool GetAM()
     {
         return false;
     }
 
-    virtual public bool Get12hr()
+    public virtual bool Get12hr()
     {
         return false;
     }

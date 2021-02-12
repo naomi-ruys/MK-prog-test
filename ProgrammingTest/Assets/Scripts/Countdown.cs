@@ -81,7 +81,7 @@ public class Countdown : Clock
         stopButton.interactable = true;
     }
 
-    override public void SetTime(Util.MyTime newTime, bool am = true)
+    public override void SetTime(Util.MyTime newTime, bool am = true)
     {
         currTime = newTime;
 

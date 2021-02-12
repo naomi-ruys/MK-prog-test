@@ -86,7 +86,7 @@ public class TimeDisplay : Clock
         }
     }
 
-    override public void SetTime(Util.MyTime newTime, bool am = true)
+    public override void SetTime(Util.MyTime newTime, bool am = true)
     {
         currTime = newTime;
         formatAM = am;
@@ -191,12 +191,12 @@ public class TimeDisplay : Clock
         }
     }
 
-    override public bool GetAM()
+    public override bool GetAM()
     {
         return formatAM;
     }
 
-    override public bool Get12hr()
+    public override bool Get12hr()
     {
         return format12hr;
     }
