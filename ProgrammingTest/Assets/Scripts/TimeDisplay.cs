@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class TimeDisplay : Clock
 {
-    public GameObject hours, minutes, seconds;
-    public GameObject separatorHM, separatorMS;
-    public GameObject amPM;
+    [SerializeField] private GameObject hours, minutes, seconds;
+    [SerializeField] private GameObject separatorMS, amPM;
 
     private bool format12hr = false;
     private bool formatAM;

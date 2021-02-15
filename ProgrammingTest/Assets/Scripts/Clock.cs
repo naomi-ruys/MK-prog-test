@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public abstract class Clock : MonoBehaviour
 {
-    public Button removeButton;
-    protected Util.MyTime currTime = new Util.MyTime(0, 0, 0);
-
     public const int MaxSeconds = 59;
     public const int MaxMinutes = 59;
     public const int MaxHours12 = 12;
@@ -17,6 +14,9 @@ public abstract class Clock : MonoBehaviour
 
     public const string AMString = "AM";
     public const string PMString = "PM";
+
+    [SerializeField] private Button removeButton;
+    protected Util.MyTime currTime = new Util.MyTime(0, 0, 0);
 
     //start paused, allow player to begin stopwatch
     protected bool pause = true;

@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class SetTime : MonoBehaviour
 {
-    public GameObject hours, minutes, seconds;
-    public GameObject separatorHM, separatorMS;
-    public GameObject amPM;
+    [SerializeField] private GameObject hours, minutes, seconds;
+    [SerializeField] private GameObject separatorHM, separatorMS, amPM;
 
     private Util.MyTime newTime = new Util.MyTime(0, 0, 0);
     private Clock display;

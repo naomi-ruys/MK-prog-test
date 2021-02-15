@@ -7,12 +7,12 @@ public class ClockManager : MonoBehaviour
 {
     public static ClockManager cm;
 
-    public Button addButton;
-    public Clock timeDisplay, stopwatch, countdown;
-    public GameObject newClockPanel;
-    public SetTime setTimePanel;
-    public Canvas canvas; //this determines the scaling of the UI
-    public RectTransform scrollRT;
+    [SerializeField] private Button addButton;
+    [SerializeField] private Clock timeDisplay, stopwatch, countdown;
+    [SerializeField] private GameObject newClockPanel;
+    [SerializeField] private SetTime setTimePanel;
+    [SerializeField] private Canvas canvas; //this determines the scaling of the UI
+    [SerializeField] private RectTransform scrollRT;
 
     private List<Clock> clocks = new List<Clock>();
 
@@ -22,6 +22,10 @@ public class ClockManager : MonoBehaviour
     private Vector2 screenDimensions;
     private int numClocksX = 3;
     private int scrollHeight;
+
+    private const int MaxClocksXHorizontalDisp = 3;
+    private const int MaxClocksXVerticalDisp = 1;
+    private const int MinClocks = 1;
 
 
     private void Awake()
@@ -48,7 +52,7 @@ public class ClockManager : MonoBehaviour
         AddDisplay(timeDisplay);
 
         //Set the height of the scroll section
-        if(numClocksX == 1)
+        if(numClocksX == MaxClocksXVerticalDisp)
         {
             scrollHeight = ((int)clockDimensions.y + (int)spacing.y) * 2;
         }
@@ -78,7 +82,7 @@ public class ClockManager : MonoBehaviour
 
         clocks.Add(newClock);
 
-        if (clocks.Count == 1)
+        if (clocks.Count == MinClocks)
         {
             clocks[0].DeactiveRemoveButton();
         } else
@@ -115,12 +119,12 @@ public class ClockManager : MonoBehaviour
         float ratio = screenDimensions.x / screenDimensions.y;
 
         if (ratio >= 1)
-        { //horizontal
-            numClocksX = 3;
+        { //horizontal display
+            numClocksX = MaxClocksXHorizontalDisp;
         }
         else
-        { //vertical
-            numClocksX = 1;
+        { //vertical display
+            numClocksX = MaxClocksXVerticalDisp;
         }
 
         layout.constraintCount = numClocksX;
@@ -139,7 +143,7 @@ public class ClockManager : MonoBehaviour
         int clockHeight = (int)clockDimensions.y + (int)spacing.y;
         int numLines;
 
-        if (numClocksX == 3)
+        if (numClocksX == MaxClocksXHorizontalDisp)
         {
             if (clocks.Count % numClocksX == 0)
             {
@@ -148,7 +152,7 @@ public class ClockManager : MonoBehaviour
                 scrollHeight += (int)spacing.y * 2;
             }
         }
-        else if (numClocksX == 1)
+        else if (numClocksX == MaxClocksXVerticalDisp)
         {
             numLines = clocks.Count + 1;
             scrollHeight = numLines * clockHeight;
@@ -162,7 +166,7 @@ public class ClockManager : MonoBehaviour
     public void RemoveClock(Clock clock)
     {
         clocks.Remove(clock);
-        if(clocks.Count == 1)
+        if(clocks.Count == MinClocks)
         {
             clocks[0].DeactiveRemoveButton();
         }

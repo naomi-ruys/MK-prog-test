@@ -400,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 7767921221063765282, guid: 9dd20d145a6fa4c3eb147a40d20f5d46,
         type: 3}
       propertyPath: m_Name
-      value: D3-MiliSecs
+      value: D3-MilliSecs
       objectReference: {fileID: 0}
     - target: {fileID: 7767921221063765282, guid: 9dd20d145a6fa4c3eb147a40d20f5d46,
         type: 3}

@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class Countdown : Clock
 {
-    public GameObject hours, minutes, seconds;
-    public GameObject separatorHM, separatorMS;
-    public Button startButton, stopButton;
-    public AudioSource alarmSound;
+    [SerializeField] private GameObject hours, minutes, seconds;
+    [SerializeField] private GameObject separatorHM;
+    [SerializeField] private Button startButton, stopButton;
+    [SerializeField] private AudioSource alarmSound;
 
     private Text hText, mText, sText;
 

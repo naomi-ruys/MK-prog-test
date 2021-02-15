@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Stopwatch : Clock
 {
-    public GameObject minutes, seconds, milliSeconds;
-    public Button startButton, stopButton, resetButton;
+    [SerializeField] private GameObject minutes, seconds, milliSeconds;
+    [SerializeField] private Button startButton, stopButton, resetButton;
 
     private Text mText, sText, msText;
 
