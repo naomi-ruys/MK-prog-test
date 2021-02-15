@@ -22,12 +22,10 @@ public class TimeDisplay : Clock
         amText = amPM.GetComponentInChildren<Text>();
 
         //set initial time as current time
-        currTime.hour = System.DateTime.Now.Hour;
-        currTime.minute = System.DateTime.Now.Minute;
-        currTime.second = System.DateTime.Now.Second;
+        currTime = System.DateTime.Now;
+
         //get the AM/PM of the current time
-        string tt = System.DateTime.Now.ToString(
-            "tt", System.Globalization.CultureInfo.InvariantCulture);
+        string tt = currTime.ToString("tt");
 
         if (tt == AMString)
         {
@@ -39,58 +37,35 @@ public class TimeDisplay : Clock
         }
 
         Format12();
+        InvokeRepeating(nameof(IncrementTime), 0, 1f);
     }
 
     void Update()
     {
-        IncrementTime();
-
         //display time
-        sText.text = Util.DoubleDigit((int)currTime.second);
-        mText.text = Util.DoubleDigit(currTime.minute);
-        hText.text = Util.DoubleDigit(currTime.hour);
+        amText.text = currTime.ToString("tt");
+        sText.text = currTime.ToString("ss");
+        mText.text = currTime.ToString("mm");
 
-        DisplayAmPm();
+        if (format12hr)
+        {
+            hText.text = currTime.ToString("hh");
+        }
+        else
+        {
+            hText.text = currTime.ToString("HH");
+        }
     }
 
     private void IncrementTime()
     {
-        currTime.second += Time.deltaTime;
-
-        if ((int)currTime.second > MaxSeconds)
-        {
-            currTime.minute++;
-            currTime.second = MinimumHMS;
-        }
-
-        if (currTime.minute > MaxMinutes)
-        {
-            currTime.hour++;
-            currTime.minute = MinimumHMS;
-
-            //change AM/PM
-            if (currTime.hour == MaxHours12 || currTime.hour > MaxHours24) 
-            {
-                ToggleAmPm();
-            }
-        }
-
-        if (format12hr && currTime.hour > MaxHours12)
-        {
-            currTime.hour = MinHours12;
-        }
-        else if (!format12hr && currTime.hour > MaxHours24)
-        {
-            currTime.hour = MinimumHMS;
-        }
+        currTime = currTime.AddSeconds(1f);
     }
 
-    public override void SetTime(Util.MyTime newTime, bool am = true)
+    public override void SetTime(System.DateTime newTime, bool am = true)
     {
         currTime = newTime;
         formatAM = am;
-
-        DisplayAmPm();
     }
 
     public void FormatChange(int format)
@@ -105,11 +80,11 @@ public class TimeDisplay : Clock
                 ActivateSeconds();
                 Format12();
                 break;
-            case 2:         //24hr hh:mm
+            case 2:         //24hr HH:mm
                 RemoveSeconds();
                 Format24();
                 break;
-            case 3:         //24hr hh:mm:ss
+            case 3:         //24hr HH:mm:ss
                 ActivateSeconds();
                 Format24();
                 break;
@@ -132,61 +107,25 @@ public class TimeDisplay : Clock
 
     private void Format24()
     {
-        //Don't reformat 12/24hr if just toggling seconds
-        if (!format12hr)
-        {
-            return;
-        }
-
         amPM.SetActive(false);
         format12hr = false;
-
-        //time change for PM
-        if (!formatAM && currTime.hour != MaxHours12)
-        {
-            currTime.hour += MaxHours12;
-        }
-        else if (formatAM && currTime.hour == MaxHours12)
-        {
-            currTime.hour = MinimumHMS;
-        }
     }
 
     private void Format12()
     {
-        //Don't reformat 12/24hr if just toggling seconds 
-        if (format12hr)
-        {
-            return;
-        }
-
         amPM.SetActive(true);
         format12hr = true;
-
-        if (currTime.hour > MaxHours12)
-        {
-            currTime.hour -= MaxHours12;
-        }
-        else if (currTime.hour == MinimumHMS)
-        {
-            currTime.hour = MaxHours12;
-        }
     }
 
-    private void ToggleAmPm()
+    public override int GetHour()
     {
-        formatAM = !formatAM;
-    }
-
-    private void DisplayAmPm()
-    {
-        if (formatAM)
+        if (format12hr)
         {
-            amText.text = AMString;
+            return int.Parse(currTime.ToString("hh"));
         }
         else
         {
-            amText.text = PMString;
+            return int.Parse(currTime.ToString("HH"));
         }
     }
 

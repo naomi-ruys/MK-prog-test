@@ -8,11 +8,12 @@ public class SetTime : MonoBehaviour
     [SerializeField] private GameObject hours, minutes, seconds;
     [SerializeField] private GameObject separatorHM, separatorMS, amPM;
 
-    private Util.MyTime newTime = new Util.MyTime(0, 0, 0);
+    private System.DateTime newTime;
     private Clock display;
-    private bool format12hr = true;
+    private bool format12hr = false;
     private bool formatAM = false;
     private bool timeDisplay;
+    private int nHour, nMinute, nSecond;
 
     private Text hText, mText, sText, amText;
 
@@ -30,9 +31,9 @@ public class SetTime : MonoBehaviour
     void Update()
     {
         //display time
-        sText.text = Util.DoubleDigit((int)newTime.second);
-        mText.text = Util.DoubleDigit(newTime.minute);
-        hText.text = Util.DoubleDigit(newTime.hour);
+        sText.text = DoubleDigit(nSecond);
+        mText.text = DoubleDigit(nMinute);
+        hText.text = DoubleDigit(nHour);
 
         if (formatAM)
         {
@@ -46,6 +47,7 @@ public class SetTime : MonoBehaviour
 
     public void CloseSetTimePanel()
     {
+        newTime = new System.DateTime(1, 1, 1, CalcHour(nHour), nMinute, nSecond);
         display.SetTime(newTime, formatAM);
         gameObject.SetActive(false);
     }
@@ -53,7 +55,10 @@ public class SetTime : MonoBehaviour
     public void StartSetTime(Clock display)
     {
         this.display = display;
-        newTime = display.GetTime();
+
+        nHour = display.GetHour();
+        nMinute = display.GetMinute();
+        nSecond = display.GetSecond();
 
         if (display.GetType().ToString() == "TimeDisplay")
         {
@@ -95,69 +100,93 @@ public class SetTime : MonoBehaviour
 
     public void IncrementHours()
     {
-        newTime.hour++;
-        if(timeDisplay && format12hr && newTime.hour > Clock.MaxHours12)
+        nHour++;
+        if(timeDisplay && format12hr && nHour > Clock.MaxHours12)
         {
-            newTime.hour = Clock.MinHours12;
+            nHour = Clock.MinHours12;
         }
-        else if (newTime.hour > Clock.MaxHours24)
+        else if (nHour > Clock.MaxHours24)
         {
-            newTime.hour = Clock.MinimumHMS;
+            nHour = Clock.MinimumHMS;
         }
     }
 
     public void DecrementHours()
     {
-        newTime.hour--;
-        if (timeDisplay && format12hr && newTime.hour < Clock.MinHours12)
+        nHour--;
+        if (timeDisplay && format12hr && nHour < Clock.MinHours12)
         {
-            newTime.hour = Clock.MaxHours12;
+            nHour = Clock.MaxHours12;
         }
-        else if (newTime.hour < Clock.MinimumHMS)
+        else if (nHour < Clock.MinimumHMS)
         {
-            newTime.hour = Clock.MaxHours24;
+            nHour = Clock.MaxHours24;
         }
     }
 
     public void IncrementMinutes()
     {
-        newTime.minute++;
-        if(newTime.minute > Clock.MaxMinutes)
+        nMinute++;
+        if(nMinute > Clock.MaxMinutes)
         {
-            newTime.minute = Clock.MinimumHMS;
+            nMinute = Clock.MinimumHMS;
         }
     }
 
     public void DecrementMinutes()
     {
-        newTime.minute--;
-        if (newTime.minute < Clock.MinimumHMS)
+        nMinute--;
+        if (nMinute < Clock.MinimumHMS)
         {
-            newTime.minute = Clock.MaxMinutes;
+            nMinute = Clock.MaxMinutes;
         }
     }
 
     public void IncrementSeconds()
     {
-        newTime.second++;
-        if (newTime.second > Clock.MaxSeconds)
+        nSecond++;
+        if (nSecond > Clock.MaxSeconds)
         {
-            newTime.second = Clock.MinimumHMS;
+            nSecond = Clock.MinimumHMS;
         }
     }
 
     public void DecrementSeconds()
     {
-        newTime.second--;
-        if (newTime.second < Clock.MinimumHMS)
+        nSecond--;
+        if (nSecond < Clock.MinimumHMS)
         {
-            newTime.second = Clock.MaxSeconds;
+            nSecond = Clock.MaxSeconds;
         }
     }
 
     public void ToggleAmPm()
     {
         formatAM = !formatAM;
+    }
+
+    // ----- Formatting ---------------
+
+    private int CalcHour(int hour)
+    {
+        if (format12hr)
+        {
+            if (!formatAM && hour != Clock.MaxHours12)
+            {
+                hour += Clock.MaxHours12;
+            }
+            else if (formatAM && hour == Clock.MaxHours12)
+            {
+                hour = Clock.MinimumHMS;
+            }
+        }
+
+        return hour;
+    }
+
+    private static string DoubleDigit(int time)
+    {
+        return time.ToString().PadLeft(2, '0');
     }
 
 }

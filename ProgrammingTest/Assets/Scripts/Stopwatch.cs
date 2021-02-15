@@ -10,8 +10,7 @@ public class Stopwatch : Clock
 
     private Text mText, sText, msText;
 
-    private const int MaxMilliSeconds = 99;
-    private const int MaxMinutesStopwatch = 99;
+    private const int MaxMilliseconds = 990;
 
     void Start()
     {
@@ -25,41 +24,21 @@ public class Stopwatch : Clock
 
     void Update()
     {
-        if (!pause)
+        if (pause)
         {
-            IncrementTime();
+            CancelInvoke();
         }
 
         //display time
-        msText.text = Util.DoubleDigit((int)currTime.milliSecond);
-        sText.text = Util.DoubleDigit((int)currTime.second);
-        mText.text = Util.DoubleDigit(currTime.minute);
+        msText.text = currTime.ToString("ff");
+        sText.text = currTime.ToString("ss");
+        mText.text = currTime.ToString("mm");
     }
 
     private void IncrementTime()
     {
-        currTime.milliSecond += Time.deltaTime * 100;
-
-        if ((int)currTime.milliSecond > MaxMilliSeconds)
-        {
-            currTime.second++;
-            currTime.milliSecond = MinimumHMS;
-        }
-
-        if (currTime.second > MaxSeconds)
-        {
-            currTime.minute++;
-            currTime.second = MinimumHMS;
-        }
-
-        if (currTime.minute >= MaxMinutesStopwatch &&
-            currTime.second == MaxSeconds &&
-            (int)currTime.milliSecond == MaxMilliSeconds) 
-        {
-            pause = true;
-            startButton.interactable = false;
-        }
-
+        currTime = currTime.AddMilliseconds(10f);
+        CheckMax();
     }
 
     public void PauseTime()
@@ -72,6 +51,7 @@ public class Stopwatch : Clock
 
     public void StartTime()
     {
+        InvokeRepeating(nameof(IncrementTime), 0, .01f);
         pause = false;
         startButton.interactable = false;
         stopButton.interactable = true;
@@ -80,9 +60,20 @@ public class Stopwatch : Clock
 
     public void ResetTime()
     {
-        currTime = new Util.MyTime(0, 0, 0, 0);
+        currTime = new System.DateTime(1, 1, 1, 0, 0, 0, 0);
         startButton.interactable = true;
         stopButton.interactable = false;
     }
 
+    private void CheckMax()
+    {
+        if (currTime.Minute == MaxMinutes &&
+            currTime.Second == MaxSeconds &&
+            currTime.Millisecond == MaxMilliseconds)
+        {
+            pause = true;
+            startButton.interactable = false;
+        }
+    }
 }
+

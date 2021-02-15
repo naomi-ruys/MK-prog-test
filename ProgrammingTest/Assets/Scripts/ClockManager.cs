@@ -101,7 +101,6 @@ public class ClockManager : MonoBehaviour
         setTimePanel.StartSetTime(display);
     }
 
-    
 
     // ----- Formatting -----
 

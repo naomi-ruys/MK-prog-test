@@ -26,42 +26,21 @@ public class Countdown : Clock
 
     void Update()
     {
-        if (!pause)
+        if(pause)
         {
-            DecrementTime();
+            CancelInvoke();
         }
 
         //display time
-        sText.text = Util.DoubleDigit((int)currTime.second);
-        mText.text = Util.DoubleDigit(currTime.minute);
-        hText.text = Util.DoubleDigit(currTime.hour);
+        sText.text = currTime.ToString("ss");
+        mText.text = currTime.ToString("mm");
+        hText.text = currTime.ToString("HH");
     }
 
     private void DecrementTime()
     {
-        currTime.second -= Time.deltaTime;
-
-        if (currTime.second < MinimumHMS &&
-            (currTime.minute > MinimumHMS || currTime.hour > MinimumHMS))
-        {
-            currTime.minute--;
-            currTime.second = MaxSeconds;
-        }
-
-        if (currTime.minute < MinimumHMS && currTime.hour > MinimumHMS)
-        {
-            currTime.hour--;
-            currTime.minute = MaxMinutes;
-        }
-
-        if (currTime.hour == MinimumHMS &&
-            currTime.minute == MinimumHMS &&
-            (int)currTime.second == MinimumHMS)
-        {
-            pause = true;
-            startButton.interactable = false;
-            PlaySound();
-        }
+        currTime = currTime.AddSeconds(-1f);
+        CheckEnd();
     }
 
     public void PauseTime()
@@ -73,22 +52,24 @@ public class Countdown : Clock
 
     public void StartTime()
     {
-        if (currTime.hour == MinimumHMS)
+        if (currTime.Hour == MinimumHMS)
         {
             hours.SetActive(false);
             separatorHM.SetActive(false);
         }
+
+        InvokeRepeating(nameof(DecrementTime), 0, 1f);
         pause = false;
 
         startButton.interactable = false;
         stopButton.interactable = true;
     }
 
-    public override void SetTime(Util.MyTime newTime, bool am = true)
+    public override void SetTime(System.DateTime newTime, bool am = true)
     {
         currTime = newTime;
 
-        if(currTime.hour > MinimumHMS)
+        if(currTime.Hour > MinimumHMS)
         {
             hours.SetActive(true);
             separatorHM.SetActive(true);
@@ -100,9 +81,28 @@ public class Countdown : Clock
         }
 
         //only allow interaction with start if the timer is not set to 00:00:00
-        if (!currTime.TimeIsZero())
+        if (currTime.Hour > MinimumHMS ||
+            currTime.Minute > MinimumHMS ||
+            currTime.Second > MinimumHMS)
         {
             startButton.interactable = true;
+        }
+        else
+        {
+            startButton.interactable = false;
+        }
+    }
+
+    private void CheckEnd()
+    {
+        if (currTime.Hour == MinimumHMS &&
+            currTime.Minute == MinimumHMS &&
+            currTime.Second == MinimumHMS)
+        {
+            pause = true;
+            startButton.interactable = false;
+            stopButton.interactable = false;
+            PlaySound();
         }
     }
 

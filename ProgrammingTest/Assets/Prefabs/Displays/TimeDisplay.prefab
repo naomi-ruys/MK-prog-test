@@ -331,7 +331,6 @@ MonoBehaviour:
   hours: {fileID: 5791273308981586284}
   minutes: {fileID: 4816182475695060843}
   seconds: {fileID: 4816182475121379843}
-  separatorHM: {fileID: 9211322325517042320}
   separatorMS: {fileID: 7940218591384790977}
   amPM: {fileID: 7047028967905125603}
 --- !u!1 &2962162667094103576
@@ -2403,12 +2402,6 @@ PrefabInstance:
 --- !u!224 &4868448400035157535 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8894575325911327624, guid: d108dd830bf144a20a4fb9c80902b730,
-    type: 3}
-  m_PrefabInstance: {fileID: 4107235738927248791}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9211322325517042320 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5128164001839953671, guid: d108dd830bf144a20a4fb9c80902b730,
     type: 3}
   m_PrefabInstance: {fileID: 4107235738927248791}
   m_PrefabAsset: {fileID: 0}
