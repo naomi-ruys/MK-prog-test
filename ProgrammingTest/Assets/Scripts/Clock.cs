@@ -15,6 +15,9 @@ public abstract class Clock : MonoBehaviour
     public const int MinHours12 = 1;
     public const int MinimumHMS = 0;
 
+    public const string AMString = "AM";
+    public const string PMString = "PM";
+
     //start paused, allow player to begin stopwatch
     protected bool pause = true;
 

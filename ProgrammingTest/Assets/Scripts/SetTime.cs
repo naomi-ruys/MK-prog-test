@@ -37,11 +37,11 @@ public class SetTime : MonoBehaviour
 
         if (formatAM)
         {
-            amText.text = "AM";
+            amText.text = Clock.AMString;
         }
         else
         {
-            amText.text = "PM";
+            amText.text = Clock.PMString;
         }
     }
 

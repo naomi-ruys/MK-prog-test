@@ -30,7 +30,7 @@ public class TimeDisplay : Clock
         string tt = System.DateTime.Now.ToString(
             "tt", System.Globalization.CultureInfo.InvariantCulture);
 
-        if (tt == "AM")
+        if (tt == AMString)
         {
             formatAM = true;
         }
@@ -51,7 +51,7 @@ public class TimeDisplay : Clock
         mText.text = Util.DoubleDigit(currTime.minute);
         hText.text = Util.DoubleDigit(currTime.hour);
 
-        displayAmPm();
+        DisplayAmPm();
     }
 
     private void IncrementTime()
@@ -91,7 +91,7 @@ public class TimeDisplay : Clock
         currTime = newTime;
         formatAM = am;
 
-        displayAmPm();
+        DisplayAmPm();
     }
 
     public void FormatChange(int format)
@@ -179,15 +179,15 @@ public class TimeDisplay : Clock
         formatAM = !formatAM;
     }
 
-    private void displayAmPm()
+    private void DisplayAmPm()
     {
         if (formatAM)
         {
-            amText.text = "AM";
+            amText.text = AMString;
         }
         else
         {
-            amText.text = "PM";
+            amText.text = PMString;
         }
     }
 
