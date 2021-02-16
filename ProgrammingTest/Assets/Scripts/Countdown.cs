@@ -7,7 +7,7 @@ public class Countdown : Clock
 {
     [SerializeField] private GameObject hours, minutes, seconds;
     [SerializeField] private GameObject separatorHM;
-    [SerializeField] private Button startButton, stopButton;
+    [SerializeField] private Button startButton, stopButton, setTimeButton;
     [SerializeField] private AudioSource alarmSound;
 
     private Text hText, mText, sText;
@@ -48,6 +48,7 @@ public class Countdown : Clock
         pause = true;
         startButton.interactable = true;
         stopButton.interactable = false;
+        setTimeButton.interactable = true;
     }
 
     public void StartTime()
@@ -63,6 +64,7 @@ public class Countdown : Clock
 
         startButton.interactable = false;
         stopButton.interactable = true;
+        setTimeButton.interactable = false;
     }
 
     public override void SetTime(System.DateTime newTime, bool am = true)
