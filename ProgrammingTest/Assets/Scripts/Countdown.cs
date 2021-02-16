@@ -104,6 +104,7 @@ public class Countdown : Clock
             pause = true;
             startButton.interactable = false;
             stopButton.interactable = false;
+            setTimeButton.interactable = true;
             PlaySound();
         }
     }
