@@ -7,6 +7,7 @@ public class SetTime : MonoBehaviour
 {
     [SerializeField] private GameObject hours, minutes, seconds;
     [SerializeField] private GameObject separatorHM, separatorMS, amPM;
+    [SerializeField] private Color activeText, standardText;
 
     private System.DateTime newTime;
     private Clock display;
@@ -17,17 +18,20 @@ public class SetTime : MonoBehaviour
 
     private Text hText, mText, sText, amText;
 
-    // Start is called before the first frame update
-    void Start()
+    private List<Text> activeElements;
+    private int selectedElement = 0;
+
+    private void Awake()
     {
         //get all text elements
         hText = hours.GetComponentInChildren<Text>();
         mText = minutes.GetComponentInChildren<Text>();
         sText = seconds.GetComponentInChildren<Text>();
         amText = amPM.GetComponentInChildren<Text>();
+
+        activeElements = new List<Text>() { hText, mText, sText, amText };
     }
 
-    // Update is called once per frame
     void Update()
     {
         //display time
@@ -43,12 +47,17 @@ public class SetTime : MonoBehaviour
         {
             amText.text = Clock.PMString;
         }
+
+        HandleKeyboardNavigation();
+
     }
 
     public void CloseSetTimePanel()
     {
         newTime = new System.DateTime(1, 1, 1, CalcHour(nHour), nMinute, nSecond);
         display.SetTime(newTime, formatAM);
+        activeElements[selectedElement].color = standardText;
+        selectedElement = 0;
         gameObject.SetActive(false);
     }
 
@@ -93,7 +102,10 @@ public class SetTime : MonoBehaviour
             separatorMS.SetActive(true);
             seconds.SetActive(true);
             amPM.SetActive(false);
+            format12hr = false;
         }
+
+        activeElements[selectedElement].color = activeText;
     }
 
     // ----- Time Change Buttons ---------------
@@ -164,6 +176,105 @@ public class SetTime : MonoBehaviour
     {
         formatAM = !formatAM;
     }
+
+    // ----- Keyboard Navigation ---------------
+
+    private void HandleKeyboardNavigation()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            GoToNextDigit();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            GoToPrevDigit();
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            switch (selectedElement)
+            {
+                case 0:
+                    IncrementHours();
+                    break;
+                case 1:
+                    IncrementMinutes();
+                    break;
+                case 2:
+                    IncrementSeconds();
+                    break;
+                case 3:
+                    ToggleAmPm();
+                    break;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            switch (selectedElement)
+            {
+                case 0:
+                    DecrementHours();
+                    break;
+                case 1:
+                    DecrementMinutes();
+                    break;
+                case 2:
+                    DecrementSeconds();
+                    break;
+                case 3:
+                    ToggleAmPm();
+                    break;
+            }
+        }
+    }
+
+    private void GoToNextDigit()
+    {
+        activeElements[selectedElement].color = standardText;
+        selectedElement++;
+
+        if(selectedElement >= activeElements.Count)
+        {
+            selectedElement = 0;
+        }
+
+        //Skip over elements that are inactive/hidden
+        while (!activeElements[selectedElement].IsActive())
+        {
+            selectedElement++;
+
+            if (selectedElement >= activeElements.Count)
+            {
+                selectedElement = 0;
+            }
+        }
+
+        activeElements[selectedElement].color = activeText;
+    }
+
+    private void GoToPrevDigit()
+    {
+        activeElements[selectedElement].color = standardText;
+        selectedElement--;
+
+        if (selectedElement < 0)
+        {
+            selectedElement = activeElements.Count - 1;
+        }
+
+        //Skip over elements that are inactive/hidden
+        while (!activeElements[selectedElement].IsActive())
+        {
+            selectedElement--;
+
+            if (selectedElement < 0)
+            {
+                selectedElement = activeElements.Count - 1;
+            }
+        }
+
+        activeElements[selectedElement].color = activeText;
+    }
+
 
     // ----- Formatting ---------------
 
